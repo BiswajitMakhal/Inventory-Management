@@ -1,0 +1,24 @@
+const express = require("express");
+// const cors = require("cors");
+const app = express();
+app.use(express.static("public"));
+
+// app.use(cors())
+app.set("view engine", "ejs");
+app.set("views", "views");
+
+const dbConnection = require("./app/config/db");
+dbConnection();
+
+const dashboard = async (req, res) => {
+  return res.render("dashboard");
+};
+
+const Router = express.Router();
+Router.get("/dashboard", dashboard);
+app.use(Router);
+
+const port = 7005;
+app.listen(port, () => {
+  console.log(`http://localhost:${port}`);
+});
