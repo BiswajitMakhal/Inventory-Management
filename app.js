@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -9,13 +10,13 @@ app.set("views", "views");
 
 const dbConnection = require("./app/config/db");
 dbConnection();
+app.use(express.json());
 
-// const dashboard = async (req, res) => {
-//   return res.render("dashboard");
-// };
+const adminAuthRoute = require("./app/routes/adminAuthRoute");
+app.use(adminAuthRoute);
 
-const dashboardRoute = require("./app/routes/dashboardRoute");
-app.use(dashboardRoute);
+const categoryRoute = require('./app/routes/categoryRoute');
+app.use(categoryRoute);
 
 const port = 7005;
 app.listen(port, () => {
