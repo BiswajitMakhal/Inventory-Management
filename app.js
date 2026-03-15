@@ -15,8 +15,17 @@ app.use(express.json());
 const adminAuthRoute = require("./app/routes/adminAuthRoute");
 app.use(adminAuthRoute);
 
-const categoryRoute = require('./app/routes/categoryRoute');
+const categoryRoute = require("./app/routes/categoryRoute");
 app.use(categoryRoute);
+
+const productRoute = require("./app/routes/productRoute");
+app.use(productRoute);
+
+const supplierRoute = require("./app/routes/supplierRoute");
+app.use(supplierRoute);
+
+const orderRoute = require('./app/routes/orderRoute');
+app.use(orderRoute)
 
 const port = 7005;
 app.listen(port, () => {

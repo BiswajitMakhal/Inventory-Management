@@ -41,6 +41,7 @@ const productSchema = new Schema(
       default: "Active",
     },
     imageUrl: String,
+    imagePublicId: String,
   },
   { timestamps: true },
 );

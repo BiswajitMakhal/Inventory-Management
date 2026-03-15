@@ -67,6 +67,24 @@ class CategoryController {
       });
     }
   }
+  async updateCategory(req, res) {
+    try {
+      const id = req.params.id;
+      const category = await Category.findByIdAndUpdate(id, req.body, {
+        new: true,
+      });
+      return res.status(statusCode.Ok).json({
+        success: true,
+        message: "category updated",
+        data: category,
+      });
+    } catch (err) {
+       return res.status(statusCode.SERVER_ERROR).json({
+        success: false,
+        message: err.message,
+      });
+    }
+  }
 }
 
 module.exports = new CategoryController();
