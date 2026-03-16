@@ -50,9 +50,9 @@ const paymentRoute = require("./app/routes/paymentRoute");
 app.use(paymentRoute);
 
 const userFrontedRoute = require("./app/routes/userFrontendRoute");
-app.use('/user',userFrontedRoute);
+app.use("/user", userFrontedRoute);
 
-const port = 7005;
-app.listen(port, () => {
+const PORT = process.env.PORT || 7005;
+app.listen(PORT, () => {
   console.log(`http://localhost:${port}`);
 });
