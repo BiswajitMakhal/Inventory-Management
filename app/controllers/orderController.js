@@ -2,6 +2,7 @@ const Order = require("../models/order");
 const User = require("../models/user");
 const Product = require("../models/product");
 const StockLog = require("../models/stocklog");
+const Payment = require("../models/payment"); 
 const crypto = require("crypto");
 const statusCode = require("../helper/statusCode");
 
@@ -22,6 +23,7 @@ class OrderController {
       });
     }
   }
+
   async createOrder(req, res) {
     try {
       const { userId, products } = req.body;
@@ -52,6 +54,15 @@ class OrderController {
         products,
         totalAmount,
         status: "Completed",
+      });
+
+      await Payment.create({
+        orderId: order._id,
+        totalAmount: order.totalAmount,
+        paidAmount: 0,
+        dueAmount: order.totalAmount,
+        status: "Unpaid",
+        paymentMethod: "Cash",
       });
 
       for (let item of products) {
@@ -88,6 +99,7 @@ class OrderController {
       });
     }
   }
+
   async cancelOrder(req, res) {
     try {
       const id = req.params.id;
