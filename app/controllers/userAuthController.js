@@ -26,7 +26,7 @@ class UserAuthController {
         name,
         email,
         password: hashedPassword,
-        role: role || "User",
+        role: "User",
       });
 
       return res.redirect("/login");
