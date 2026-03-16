@@ -3,6 +3,7 @@ const express = require("express");
 const Router = express.Router();
 const { AuthCheck,isUser } = require("../middleware/authCheck");
 
+Router.get("/home", AuthCheck, isUser, userFrontendController.getHomePage);
 Router.get("/cart", AuthCheck, isUser, userFrontendController.getCartPage);
 Router.get("/orders", AuthCheck, isUser, userFrontendController.getUserOrders);
 

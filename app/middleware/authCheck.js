@@ -22,7 +22,7 @@ const isAdmin = (req, res, next) => {
   if (req.user && req.user.role === "Admin") {
     next();
   } else {
-    return res.redirect("/home");
+    return res.redirect("/login");
   }
 };
 
