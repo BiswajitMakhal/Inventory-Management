@@ -1,10 +1,27 @@
 const Order = require("../models/order");
+const User = require("../models/user");
 const Product = require("../models/product");
 const StockLog = require("../models/stocklog");
 const crypto = require("crypto");
 const statusCode = require("../helper/statusCode");
 
 class OrderController {
+  async getAddOrderPage(req, res) {
+    try {
+      const users = await User.find({ role: "User" });
+      const products = await Product.find({
+        status: "Active",
+        stockQuantity: { $gt: 0 },
+      });
+
+      return res.render("admin/addOrder", { users, products });
+    } catch (err) {
+      return res.status(statusCode.SERVER_ERROR).json({
+        success: false,
+        message: err.message,
+      });
+    }
+  }
   async createOrder(req, res) {
     try {
       const { userId, products } = req.body;
@@ -48,11 +65,7 @@ class OrderController {
           reason: `Sold in Order ${orderId}`,
         });
       }
-      return res.status(statusCode.Ok).json({
-        success: true,
-        message: "order created",
-        data: order,
-      });
+      return res.redirect("/orders");
     } catch (err) {
       return res.status(statusCode.SERVER_ERROR).json({
         success: true,
@@ -64,9 +77,9 @@ class OrderController {
   async getAllOrder(req, res) {
     try {
       const orders = await Order.find()
-        .populate("user", "name email")
+        .populate("userId", "name email")
         .populate("products.productId", "name");
-      return res.status(statusCode.Ok).json({ success: true, orders });
+      return res.render("admin/sales", { orders });
     } catch (error) {
       return res.status(statusCode.SERVER_ERROR).json({
         success: false,
@@ -97,7 +110,7 @@ class OrderController {
         });
 
         await StockLog.create({
-          product: item.productId,
+          productId: item.productId,
           type: "In",
           quantity: item.quantity,
           reason: `Order Cancelled - Order ID: ${order.orderId}`,
@@ -107,11 +120,7 @@ class OrderController {
       order.status = "Cancelled";
       await order.save();
 
-      res.status(statusCode.Ok).json({
-        success: true,
-        message: "Order cancelled and stock restored successfully",
-        order,
-      });
+      return res.redirect("/orders");
     } catch (error) {
       res.status(statusCode.SERVER_ERROR).json({
         success: false,

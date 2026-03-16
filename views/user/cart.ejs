@@ -1,0 +1,73 @@
+<%- include('../layouts/user-header') %>
+
+<div class="container">
+    <h2 class="fw-bold mb-4">Your Shopping Cart</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th class="pe-4">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(cartItems && cartItems.length > 0) { %>
+                                    <% cartItems.forEach(item => { %>
+                                        <tr>
+                                            <td class="ps-4"><%= item.productName %></td>
+                                            <td>₹<%= item.price %></td>
+                                            <td><%= item.quantity %></td>
+                                            <td class="fw-bold">₹<%= item.price * item.quantity %></td>
+                                            <td class="pe-4">
+                                                <form action="/user/cart/remove/<%= item.productId %>" method="POST">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr><td colspan="5" class="text-center py-4">Your cart is empty.</td></tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4">
+                <h5 class="fw-bold mb-3">Order Summary</h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal</span>
+                    <span class="fw-bold">₹<%= cartTotal || 0 %></span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-4 fs-5 text-success">
+                    <span class="fw-bold">Total</span>
+                    <span class="fw-bold">₹<%= cartTotal || 0 %></span>
+                </div>
+
+                <% if(cartItems && cartItems.length > 0) { %>
+                    <form action="/user/checkout" method="POST">
+                        <button type="submit" class="btn btn-success w-100 py-2 fs-5">Place Order</button>
+                    </form>
+                <% } else { %>
+                    <a href="/user/home" class="btn btn-primary w-100 py-2 fs-5">Continue Shopping</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

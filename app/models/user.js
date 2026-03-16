@@ -18,7 +18,8 @@ const adminSchema = new Schema(
     },
     role: {
       type: String,
-      default: "admin",
+      enum: ["User", "Admin"],
+      default: "User",
     },
     failedLoginAttempts: {
       type: Number,
@@ -34,6 +35,6 @@ const adminSchema = new Schema(
   },
 );
 
-const adminModel = mongoose.model("admin", adminSchema);
+const adminModel = mongoose.model("user", adminSchema);
 
 module.exports = adminModel;

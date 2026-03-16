@@ -1,0 +1,92 @@
+<%- include('../layouts/header') %>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <%- include('../layouts/sidebar') %>
+            
+            <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+                <h2 class="fw-bold mb-4">Payment & Due Tracking</h2>
+
+                <div class="card p-4 shadow-sm border-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Total Amount</th>
+                                    <th>Paid Amount</th>
+                                    <th>Due Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(payments && payments.length > 0) { %>
+                                    <% payments.forEach(payment => { %>
+                                        <tr>
+                                            <td class="fw-bold"><%= payment.orderId ? payment.orderId.orderId : 'N/A' %></td>
+                                            <td>₹<%= payment.totalAmount %></td>
+                                            <td class="text-success">₹<%= payment.paidAmount %></td>
+                                            <td class="text-danger fw-bold">₹<%= payment.dueAmount %></td>
+                                            <td>
+                                                <span class="badge <%= payment.status === 'Paid' ? 'bg-success' : (payment.status === 'Partial' ? 'bg-warning' : 'bg-danger') %>">
+                                                    <%= payment.status %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <% if(payment.status !== 'Paid') { %>
+                                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#payModal<%= payment._id %>">Pay Now</button>
+                                                <% } else { %>
+                                                    <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                                                <% } %>
+                                            </td>
+                                        </tr>
+
+                                        <div class="modal fade" id="payModal<%= payment._id %>" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form action="/payments/create" method="POST">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Record Payment</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="orderId" value="<%= payment.orderId._id %>">
+                                                            <div class="mb-3">
+                                                                <label>Due Amount</label>
+                                                                <input type="text" class="form-control" value="₹<%= payment.dueAmount %>" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label>Enter Amount to Pay</label>
+                                                                <input type="number" name="amountPaid" class="form-control" max="<%= payment.dueAmount %>" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label>Payment Method</label>
+                                                                <select name="paymentMethod" class="form-select">
+                                                                    <option value="Cash">Cash</option>
+                                                                    <option value="Card">Card</option>
+                                                                    <option value="Online">Online</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-success">Submit Payment</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr><td colspan="6" class="text-center">No payment records found.</td></tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

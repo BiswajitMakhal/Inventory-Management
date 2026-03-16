@@ -2,6 +2,9 @@ const Product = require("../models/product");
 const statusCode = require("../helper/statusCode");
 const cloudinary = require("../config/cloudinary");
 const uploadToCloudinary = require("../utils/uploadCloudinary");
+// addproducts
+const Category = require("../models/category");
+const Supplier = require("../models/supplier");
 
 class ProductController {
   async createProduct(req, res) {
@@ -36,10 +39,27 @@ class ProductController {
         imageUrl,
         imagePublicId,
       });
-      return res.status(statusCode.Ok).json({
-        success: true,
-        message: "product created",
-        data: product,
+      return res.redirect("/products");
+    } catch (err) {
+      return res.status(statusCode.SERVER_ERROR).json({
+        success: false,
+        message: err.message,
+      });
+    }
+  }
+  async getEditProductPage(req, res) {
+    try {
+      const id = req.params.id;
+      const product = await Product.findById(id);
+      if (!product) {
+        return res.redirect("/products");
+      }
+      const categories = await Category.find();
+      const suppliers = await Supplier.find();
+      return res.render("admin/editProduct", {
+        product,
+        categories,
+        suppliers,
       });
     } catch (err) {
       return res.status(statusCode.SERVER_ERROR).json({
@@ -68,8 +88,8 @@ class ProductController {
           message: "Product not found",
         });
       }
-      let imageUrl = product.secure_url;
-      let imagePublicId = product.public_id;
+      let imageUrl = product.imageUrl;
+      let imagePublicId = product.imagePublicId;
 
       if (req.file) {
         if (product.imagePublicId) {
@@ -96,11 +116,7 @@ class ProductController {
         { new: true },
       );
 
-      return res.status(statusCode.Ok).json({
-        success: true,
-        message: "Product updated successfully",
-        data: product,
-      });
+      return res.redirect("/products");
     } catch (err) {
       return res.status(statusCode.SERVER_ERROR).json({
         success: false,
@@ -122,10 +138,7 @@ class ProductController {
         await cloudinary.uploader.destroy(product.imagePublicId);
       }
       await Product.findByIdAndDelete(id);
-      return res.status(statusCode.Ok).json({
-        success: true,
-        message: "Product deleted successfully",
-      });
+      return res.redirect("/products");
     } catch (err) {
       return res.status(statusCode.SERVER_ERROR).json({
         success: false,
@@ -139,10 +152,19 @@ class ProductController {
       const product = await Product.find()
         .populate("categoryId", "name")
         .populate("supplierId", "name");
-      return res.status(statusCode.Ok).json({
-        success: true,
-        product,
+      return res.render("admin/products", { product });
+    } catch (err) {
+      return res.status(statusCode.SERVER_ERROR).json({
+        success: false,
+        message: err.message,
       });
+    }
+  }
+  async getAddProductPage(req, res) {
+    try {
+      const categories = await Category.find();
+      const suppliers = await Supplier.find();
+      return res.render("admin/addProduct", { categories, suppliers });
     } catch (err) {
       return res.status(statusCode.SERVER_ERROR).json({
         success: false,

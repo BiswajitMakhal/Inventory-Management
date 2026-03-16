@@ -5,11 +5,7 @@ class SupplierController {
   async createSupplier(req, res) {
     try {
       const supplier = await Supplier.create(req.body);
-      return res.status(statusCode.Ok).json({
-        success: true,
-        message: "suppier created",
-        data: supplier,
-      });
+      return res.redirect("/suppliers");
     } catch (err) {
       return res.status(statusCode.SERVER_ERROR).json({
         success: false,
@@ -19,12 +15,8 @@ class SupplierController {
   }
   async getAllSupplier(req, res) {
     try {
-      const supplier = await Supplier.find();
-      return res.status(statusCode.Ok).json({
-        success: true,
-        message: "Supplier get",
-        data: supplier,
-      });
+      const suppliers = await Supplier.find();
+      return res.render("admin/suppliers", { suppliers });
     } catch (err) {
       return res.status(statusCode.SERVER_ERROR).json({
         success: false,
@@ -36,10 +28,7 @@ class SupplierController {
     try {
       const id = req.params.id;
       await Supplier.findByIdAndDelete(id);
-      return res.status(statusCode.Ok).json({
-        success: true,
-        message: "supplier deleted",
-      });
+      return res.redirect("/suppliers");
     } catch (err) {
       return res.status(statusCode.SERVER_ERROR).json({
         success: false,
@@ -53,11 +42,7 @@ class SupplierController {
       const supplier = await Supplier.findByIdAndUpdate(id, req.body, {
         new: true,
       });
-      return res.status(statusCode.Ok).json({
-        success: true,
-        message: "supplier updated",
-        data: supplier,
-      });
+      return res.redirect("/suppliers");
     } catch (err) {
       return res.status(statusCode.SERVER_ERROR).json({
         success: false,

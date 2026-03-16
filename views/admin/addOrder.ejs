@@ -1,0 +1,58 @@
+<%- include('../layouts/header') %>
+
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <%- include('../layouts/sidebar') %>
+
+                    <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="fw-bold">Create Order</h2>
+                            <a href="/orders" class="btn btn-outline-secondary">Back to Orders</a>
+                        </div>
+
+                        <div class="card p-4 shadow-sm border-0" style="max-width: 600px;">
+                            <form action="/order/create" method="POST">
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Select Customer</label>
+                                    <select name="userId" class="form-select" required>
+                                        <option value="" disabled selected>Choose a customer...</option>
+                                        <% users.forEach(user=> { %>
+                                            <option value="<%= user._id %>">
+                                                <%= user.name %> (<%= user.email %>)
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Select Product</label>
+                                    <select name="products[0][productId]" class="form-select" required>
+                                        <option value="" disabled selected>Choose a product...</option>
+                                        <% products.forEach(p=> { %>
+                                            <option value="<%= p._id %>">
+                                                <%= p.name %> (Stock: <%= p.stockQuantity %>) - ₹<%= p.price %>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">Quantity</label>
+                                    <input type="number" name="products[0][quantity]" class="form-control" value="1"
+                                        min="1" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-success w-100 py-2 fs-5">Place Order</button>
+
+                            </form>
+                        </div>
+                    </main>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+    </html>

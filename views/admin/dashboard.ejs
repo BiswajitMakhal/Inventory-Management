@@ -1,0 +1,182 @@
+<%- include('../layouts/header') %>
+
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <%- include('../layouts/sidebar') %>
+
+                    <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-4">
+                                <div class="card stat-card bg-primary text-white p-3">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="mb-1">Total Products</p>
+                                            <h2 class="fw-bold">
+                                                <%= totalProducts %>
+                                            </h2>
+                                        </div>
+                                        <i class="bi bi-box fs-1 opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card stat-card bg-success text-white p-3">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="mb-1">Total Revenue</p>
+                                            <h2 class="fw-bold">₹<%= totalSalesRevenue %>
+                                            </h2>
+                                        </div>
+                                        <i class="bi bi-currency-rupee fs-1 opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card stat-card bg-danger text-white p-3">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="mb-1">Low Stock Alert</p>
+                                            <h2 class="fw-bold">
+                                                <%= lowStockProducts %>
+                                            </h2>
+                                        </div>
+                                        <i class="bi bi-exclamation-triangle fs-1 opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card stat-card bg-info text-white p-3">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="mb-1">Total Categories</p>
+                                            <h2 class="fw-bold">
+                                                <%= totalCategories %>
+                                            </h2>
+                                        </div>
+                                        <i class="bi bi-tags fs-1 opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card stat-card bg-secondary text-white p-3">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="mb-1">Total Suppliers</p>
+                                            <h2 class="fw-bold">
+                                                <%= totalSuppliers %>
+                                            </h2>
+                                        </div>
+                                        <i class="bi bi-truck fs-1 opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- graph -->
+
+                        <div class="w-100">
+                            <canvas id="myChart"></canvas>
+                        </div>
+
+                        <!-- graph-end -->
+                        <div class="card p-4 mb-4 shadow-sm border-0">
+                            <h5 class="fw-bold mb-3">Latest Products</h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>SKU</th>
+                                            <th>Product Name</th>
+                                            <th>Category</th>
+                                            <th>Stock</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% if(latestProducts && latestProducts.length> 0) { %>
+                                            <% latestProducts.forEach(product=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= product.sku %>
+                                                    </td>
+                                                    <td>
+                                                        <%= product.name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= product.categoryId ? product.categoryId.name : 'N/A' %>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="badge <%= product.stockQuantity <= product.minStockLevel ? 'bg-danger' : 'bg-success' %>">
+                                                            <%= product.stockQuantity %>
+                                                        </span>
+                                                    </td>
+                                                    <td>₹<%= product.price %>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                                    <% } else { %>
+                                                        <tr>
+                                                            <td colspan="5" class="text-center">No products found.</td>
+                                                        </tr>
+                                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </main>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Chart.js CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+
+            // Graph
+            document.addEventListener("DOMContentLoaded", function () {
+                const productsData = <%- JSON.stringify(latestProducts || []) %>;
+                const dynamicLabels = productsData.map(item => item.name);
+                const dynamicData = productsData.map(item => item.stockQuantity);
+                const ctx = document.getElementById('myChart');
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dynamicLabels,
+                        datasets: [{
+                            label: 'Stock Quantity',
+                            data: dynamicData,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(201, 203, 207, 0.2)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true, 
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+            })
+
+            // Graph-end
+
+        </script>
+    </body>
+
+
+    </html>
