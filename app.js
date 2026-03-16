@@ -54,5 +54,5 @@ app.use("/user", userFrontedRoute);
 
 const PORT = process.env.PORT || 7005;
 app.listen(PORT, () => {
-  console.log(`http://localhost:${port}`);
+  console.log(`http://localhost:${PORT}`);
 });
