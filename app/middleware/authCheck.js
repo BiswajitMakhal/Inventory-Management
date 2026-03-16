@@ -30,7 +30,7 @@ const isUser = (req, res, next) => {
   if (req.user && req.user.role === "User") {
     next();
   } else {
-    return res.redirect("/home");
+    return res.redirect("/login");
   }
 };
 

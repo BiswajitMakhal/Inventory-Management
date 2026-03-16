@@ -78,7 +78,7 @@ class UserAuthController {
       if (user.role === "Admin") {
         return res.redirect("/dashboard");
       } else {
-        return res.redirect("/home");
+        return res.redirect("/user/home");
       }
     } catch (err) {
       return res.status(statusCode.SERVER_ERROR).json({
