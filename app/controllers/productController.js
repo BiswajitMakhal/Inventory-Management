@@ -2,6 +2,7 @@ const Product = require("../models/product");
 const statusCode = require("../helper/statusCode");
 const cloudinary = require("../config/cloudinary");
 const uploadToCloudinary = require("../utils/uploadCloudinary");
+const { Parser } = require('json2csv'); 
 // addproducts
 const Category = require("../models/category");
 const Supplier = require("../models/supplier");
@@ -170,6 +171,36 @@ class ProductController {
         success: false,
         message: err.message,
       });
+    }
+  }
+  async exportProductsCSV(req, res) {
+    try {
+      const products = await Product.find()
+        .populate("categoryId", "name")
+        .populate("supplierId", "name");
+
+      
+      const csvData = products.map((p) => ({
+        "SKU": p.sku,
+        "Product Name": p.name,
+        "Category": p.categoryId ? p.categoryId.name : "N/A",
+        "Supplier": p.supplierId ? p.supplierId.name : "N/A",
+        "Price (Rs)": p.price,
+        "Stock Quantity": p.stockQuantity,
+        "Status": p.status
+      }));
+
+      const json2csvParser = new Parser();
+      const csv = json2csvParser.parse(csvData);
+
+      res.header("Content-Type", "text/csv");
+      res.attachment("Products_Inventory_Report.csv");
+      
+      return res.send(csv);
+
+    } catch (err) {
+      console.log(err);
+      return res.redirect("/products");
     }
   }
 }

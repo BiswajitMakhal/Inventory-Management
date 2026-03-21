@@ -2,7 +2,7 @@ const Order = require("../models/order");
 const User = require("../models/user");
 const Product = require("../models/product");
 const StockLog = require("../models/stocklog");
-const Payment = require("../models/payment"); 
+const Payment = require("../models/payment");
 const crypto = require("crypto");
 const statusCode = require("../helper/statusCode");
 
@@ -85,12 +85,25 @@ class OrderController {
     }
   }
 
-  async getAllOrder(req, res) {
+
+
+ async getAllOrder(req, res) {
     try {
-      const orders = await Order.find()
+      const searchQuery = req.query.search || "";
+      let queryFilter = {};
+
+      if (searchQuery) {
+        queryFilter = {
+          orderId: { $regex: searchQuery, $options: "i" },
+        };
+      }
+
+      const orders = await Order.find(queryFilter)
+        .sort({ createdAt: -1 })
         .populate("userId", "name email")
         .populate("products.productId", "name");
-      return res.render("admin/sales", { orders });
+
+      return res.render("admin/sales", { orders, search: searchQuery });
     } catch (error) {
       return res.status(statusCode.SERVER_ERROR).json({
         success: false,

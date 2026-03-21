@@ -4,7 +4,7 @@
         <div class="row">
             <%- include('../layouts/sidebar') %>
             
-            <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            <main class="col-md-10 col-12 px-3 px-md-4 py-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="fw-bold">Suppliers</h2>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
@@ -35,12 +35,56 @@
                                             <td><%= supplier.phone %></td>
                                             <td><%= supplier.address %></td>
                                             <td>
+                                                <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editSupplierModal<%= supplier._id %>">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                
                                                 <form action="/supplier/delete/<%= supplier._id %>" method="POST" style="display:inline;">
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this supplier?')">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
-                                    <% }) %>
+
+                                        <div class="modal fade" id="editSupplierModal<%= supplier._id %>" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form action="/supplier/update/<%= supplier._id %>" method="POST">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Edit Supplier</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label>Company Name</label>
+                                                                <input type="text" name="name" class="form-control" value="<%= supplier.name %>" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label>Contact Person</label>
+                                                                <input type="text" name="contactPerson" class="form-control" value="<%= supplier.contactPerson %>" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label>Email</label>
+                                                                <input type="email" name="email" class="form-control" value="<%= supplier.email %>" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label>Phone</label>
+                                                                <input type="text" name="phone" class="form-control" value="<%= supplier.phone %>" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label>Address</label>
+                                                                <textarea name="address" class="form-control" required><%= supplier.address %></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary">Update Supplier</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% }) %>
                                 <% } else { %>
                                     <tr><td colspan="6" class="text-center">No suppliers found.</td></tr>
                                 <% } %>

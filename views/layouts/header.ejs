@@ -15,14 +15,27 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f4f7f6;
+            background-color: #f4f7fe;
         }
 
+
         .sidebar {
-            min-height: 100vh;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
             background: #1e293b;
             color: white;
             transition: all 0.3s;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         .sidebar .nav-link {
@@ -32,8 +45,7 @@
             margin: 4px 10px;
         }
 
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
+        .sidebar .nav-link:hover {
             background: #334155;
             color: white;
         }
