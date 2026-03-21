@@ -12,7 +12,6 @@
                                 Order</a>
                         </div>
 
-                        <!-- searchbar -->
                         <div class="card p-3 shadow-sm border-0 mb-4 bg-light">
                             <form action="/orders" method="GET" class="d-flex w-50">
                                 <input type="text" name="search" class="form-control me-2"
@@ -25,7 +24,6 @@
                                     <% } %>
                             </form>
                         </div>
-                        <!-- searchEnd -->
 
                         <div class="card p-4 shadow-sm border-0">
                             <div class="table-responsive">
@@ -37,7 +35,7 @@
                                             <th>Total Amount</th>
                                             <th>Status</th>
                                             <th>Date</th>
-                                            <th>Action</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -54,30 +52,52 @@
                                                     </td>
                                                     <td>
                                                         <span
-                                                            class="badge <%= order.status === 'Completed' ? 'bg-success' : (order.status === 'Cancelled' ? 'bg-danger' : 'bg-warning') %>">
+                                                            class="badge <%= order.status === 'Completed' ? 'bg-success' : (order.status === 'Cancelled' ? 'bg-danger' : 'bg-warning text-dark') %>">
                                                             <%= order.status %>
                                                         </span>
                                                     </td>
                                                     <td>
                                                         <%= new Date(order.createdAt).toLocaleDateString() %>
                                                     </td>
-                                                    <td>
-                                                        <% if(order.status !=='Cancelled' ) { %>
-                                                            <form action="/order/cancel/<%= order._id %>" method="POST"
-                                                                style="display:inline;">
-                                                                <button type="submit"
-                                                                    class="btn btn-sm btn-outline-danger"
-                                                                    onclick="return confirm('Are you sure you want to cancel this order?')">Cancel</button>
-                                                            </form>
-                                                            <% } else { %>
-                                                                <span class="text-muted">Cancelled</span>
-                                                                <% } %>
+                                                    <td class="text-center">
+                                                        <div class="d-flex gap-2 justify-content-center">
+                                                            <% if (order.status==='Pending' ) { %>
+                                                                <form action="/orders/pay/<%= order._id %>"
+                                                                    method="POST" style="display:inline;">
+                                                                    <input type="hidden" name="totalAmount"
+                                                                        value="<%= order.totalAmount %>">
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-success">
+                                                                        <i class="bi bi-cash-stack"></i> Pay
+                                                                    </button>
+                                                                </form>
+
+                                                                <form action="/order/cancel/<%= order._id %>"
+                                                                    method="POST" style="display:inline;">
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-outline-danger"
+                                                                        onclick="return confirm('Are you sure?')">
+                                                                        <i class="bi bi-x-circle"></i> Cancel
+                                                                    </button>
+                                                                </form>
+                                                                <% } else if (order.status==='Cancelled' ) { %>
+                                                                    <span
+                                                                        class="text-danger small fw-bold text-uppercase">No
+                                                                        Action</span>
+                                                                    <% } else { %>
+                                                                        <span
+                                                                            class="text-success small fw-bold text-uppercase">
+                                                                            <i class="bi bi-check-all"></i> Finalized
+                                                                        </span>
+                                                                        <% } %>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <% }) %>
                                                     <% } else { %>
                                                         <tr>
-                                                            <td colspan="6" class="text-center">No orders found.</td>
+                                                            <td colspan="6" class="text-center py-4 text-muted">No
+                                                                orders found.</td>
                                                         </tr>
                                                         <% } %>
                                     </tbody>

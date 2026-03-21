@@ -85,9 +85,7 @@ class OrderController {
     }
   }
 
-
-
- async getAllOrder(req, res) {
+  async getAllOrder(req, res) {
     try {
       const searchQuery = req.query.search || "";
       let queryFilter = {};
@@ -152,6 +150,27 @@ class OrderController {
         message: "Server error",
         error: error.message,
       });
+    }
+  }
+  async markAsPaid(req, res) {
+    try {
+      const orderId = req.params.id;
+
+      await Payment.findOneAndUpdate(
+        { orderId: orderId },
+        {
+          status: "Paid",
+          paidAmount: req.body.totalAmount,
+          dueAmount: 0,
+        },
+      );
+
+      await Order.findByIdAndUpdate(orderId, { status: "Completed" });
+
+      return res.redirect("/orders");
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send("Payment Update Failed");
     }
   }
 }
