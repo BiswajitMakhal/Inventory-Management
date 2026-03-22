@@ -88,7 +88,7 @@ class UserFrontendController {
     }
   }
 
- async checkout(req, res) {
+  async checkout(req, res) {
     try {
       if (!req.session.cart || req.session.cart.length === 0) {
         return res.redirect("/user/cart");
@@ -120,17 +120,16 @@ class UserFrontendController {
         userId,
         products: productsForOrder,
         totalAmount,
-        status: "Pending", 
+        status: "Pending",
       });
 
-     
       await Payment.create({
-        orderId: newOrder._id, 
+        orderId: newOrder._id,
         totalAmount: totalAmount,
         paidAmount: 0,
-        dueAmount: totalAmount, 
-        status: "Unpaid", 
-        paymentMethod: "Cash", 
+        dueAmount: totalAmount,
+        status: "Unpaid",
+        paymentMethod: "Cash",
       });
 
       req.session.cart = [];

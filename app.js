@@ -49,6 +49,9 @@ app.use(dashboardRoute);
 const paymentRoute = require("./app/routes/paymentRoute");
 app.use(paymentRoute);
 
+const purchaseRoute = require("./app/routes/purchaseRoute");
+app.use(purchaseRoute);
+
 const userFrontedRoute = require("./app/routes/userFrontendRoute");
 app.use("/user", userFrontedRoute);
 
