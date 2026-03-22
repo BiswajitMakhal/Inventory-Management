@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const Order = require("../models/order");
+const Payment = require("../models/payment");
 const crypto = require("crypto");
 
 class UserFrontendController {
@@ -87,7 +88,7 @@ class UserFrontendController {
     }
   }
 
-  async checkout(req, res) {
+ async checkout(req, res) {
     try {
       if (!req.session.cart || req.session.cart.length === 0) {
         return res.redirect("/user/cart");
@@ -114,19 +115,30 @@ class UserFrontendController {
       const orderId =
         "ORD-" + crypto.randomBytes(4).toString("hex").toUpperCase();
 
-      await Order.create({
+      const newOrder = await Order.create({
         orderId,
         userId,
         products: productsForOrder,
         totalAmount,
-        status: "Pending",
+        status: "Pending", 
+      });
+
+     
+      await Payment.create({
+        orderId: newOrder._id, 
+        totalAmount: totalAmount,
+        paidAmount: 0,
+        dueAmount: totalAmount, 
+        status: "Unpaid", 
+        paymentMethod: "Cash", 
       });
 
       req.session.cart = [];
 
       return res.redirect("/user/orders");
     } catch (err) {
-      return res.status(500).send(err.message);
+      console.log(err);
+      return res.status(500).send("Error processing checkout: " + err.message);
     }
   }
 }

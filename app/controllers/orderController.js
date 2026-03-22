@@ -53,7 +53,7 @@ class OrderController {
         userId,
         products,
         totalAmount,
-        status: "Completed",
+        status: "Pending",
       });
 
       await Payment.create({
@@ -152,27 +152,7 @@ class OrderController {
       });
     }
   }
-  async markAsPaid(req, res) {
-    try {
-      const orderId = req.params.id;
 
-      await Payment.findOneAndUpdate(
-        { orderId: orderId },
-        {
-          status: "Paid",
-          paidAmount: req.body.totalAmount,
-          dueAmount: 0,
-        },
-      );
-
-      await Order.findByIdAndUpdate(orderId, { status: "Completed" });
-
-      return res.redirect("/orders");
-    } catch (err) {
-      console.log(err);
-      return res.status(500).send("Payment Update Failed");
-    }
-  }
 }
 
 module.exports = new OrderController();
