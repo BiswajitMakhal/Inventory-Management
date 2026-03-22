@@ -130,6 +130,10 @@ npm start, npm run dev
 
 * Track paid & due amounts
 
+### 💰 Purchase
+
+* Stock in and purchase order
+
 ---
 
 ## 🔒 Future Improvements
