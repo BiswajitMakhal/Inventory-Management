@@ -10,10 +10,10 @@ CLOUD_API_SECRET
 JWT_SECRET_KEY 
 
 # Live Link for ADMIN:
-https://inventory-management-0kg4.onrender.com/dashboard
+https://inventory-management-r8dp.onrender.com/dashboard
 
 # Live Link for USER:
-https://inventory-management-0kg4.onrender.com/user/home
+https://inventory-management-r8dp.onrender.com/user/home
 
 
 # 📦 Inventory Management System
