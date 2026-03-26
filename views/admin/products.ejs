@@ -5,23 +5,22 @@
             <div class="row">
                 <%- include('../layouts/sidebar') %>
 
-                    <main class="col-md-10 ms-sm-auto px-md-4 py-4">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h2 class="fw-bold">Products</h2>
-                            <div>
-                                <a href="/products/export/csv" class="btn btn-success me-2">
-                                    <i class="bi bi-file-earmark-excel"></i> Export CSV
-                                </a>
-
-                                <a href="/product/new" class="btn btn-primary">
-                                    <i class="bi bi-plus-lg"></i> Add Product
-                                </a>
+                    <main class="col-md-10 col-12 ms-md-auto px-3 px-md-4 py-3 py-md-4">
+                        <div
+                            class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-3">
+                            <h2 class="fw-bold m-0">Products</h2>
+                            <div class="d-flex gap-2 w-100 w-sm-auto">
+                                <a href="/products/export/csv"
+                                    class="btn btn-success btn-sm flex-fill flex-sm-grow-0"><i
+                                        class="bi bi-file-earmark-excel"></i> Export</a>
+                                <a href="/product/new" class="btn btn-primary btn-sm flex-fill flex-sm-grow-0"><i
+                                        class="bi bi-plus-lg"></i> Add</a>
                             </div>
                         </div>
 
-                        <div class="card p-4 shadow-sm border-0">
+                        <div class="card p-3 p-md-4 shadow-sm border-0">
                             <div class="table-responsive">
-                                <table class="table table-hover align-middle">
+                                <table class="table table-hover align-middle text-nowrap">
                                     <thead class="table-light">
                                         <tr>
                                             <th>Image</th>
@@ -37,32 +36,31 @@
                                             <tr>
                                                 <td>
                                                     <% if(p.imageUrl) { %>
-                                                        <img src="<%= p.imageUrl %>" width="50" height="50"
-                                                            class="rounded">
+                                                        <img src="<%= p.imageUrl %>" width="45" height="45"
+                                                            class="rounded object-fit-cover">
                                                         <% } else { %>
                                                             <span class="badge bg-secondary">No Image</span>
                                                             <% } %>
-                                                                <p class="m-0"
-                                                                    style="font-weight: 800; color: rgba(142, 141, 141, 0.904);">
+                                                                <p class="m-0 mt-1 small"
+                                                                    style="font-weight: 700; color: #888;">
                                                                     <%= p.status %>
                                                                 </p>
                                                 </td>
-                                                <td>
+                                                <td class="small fw-medium">
                                                     <%= p.sku %>
                                                 </td>
-                                                <td>
+                                                <td class="fw-bold">
                                                     <%= p.name %>
                                                 </td>
                                                 <td>₹<%= p.price %>
                                                 </td>
-                                                <td>
-                                                    <%= p.stockQuantity %>
-                                                </td>
+                                                <td><span class="badge bg-light text-dark border">
+                                                        <%= p.stockQuantity %>
+                                                    </span></td>
                                                 <td>
                                                     <a href="/product/edit/<%= p._id %>"
-                                                        class="btn btn-sm btn-outline-primary me-2"><i
-                                                            class="bi bi-pencil"></i>
-                                                    </a>
+                                                        class="btn btn-sm btn-outline-primary me-1"><i
+                                                            class="bi bi-pencil"></i></a>
                                                     <form action="/product/delete/<%= p._id %>" method="POST"
                                                         style="display:inline;">
                                                         <button type="submit" class="btn btn-sm btn-outline-danger"><i

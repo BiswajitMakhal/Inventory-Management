@@ -1,20 +1,20 @@
 <%- include('../layouts/header') %>
 <body>
     <div class="container-fluid">
-        <div class="row flex-nowrap">
+        <div class="row">
             <%- include('../layouts/sidebar') %>
             
-            <main class="col-md-10 ms-sm-auto px-md-4 py-4">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="fw-bold">Record New Purchase</h2>
-                    <a href="/purchases" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to List</a>
+            <main class="col-md-10 col-12 ms-md-auto px-3 px-md-4 py-3 py-md-4">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-3">
+                    <h2 class="fw-bold m-0">Record New Purchase</h2>
+                    <a href="/purchases" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> Back to List</a>
                 </div>
 
-                <div class="card p-4 shadow-sm border-0" style="max-width: 800px;">
+                <div class="card p-3 p-md-4 shadow-sm border-0" style="max-width: 800px;">
                     <form action="/purchase/create" method="POST">
                         <div class="row g-3">
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label fw-bold">Select Supplier</label>
+                            <div class="col-12 mb-2">
+                                <label class="form-label fw-bold small">Select Supplier</label>
                                 <select name="supplierId" class="form-select" required>
                                     <option value="" disabled selected>-- Choose a Supplier --</option>
                                     <% suppliers.forEach(supplier => { %>
@@ -23,29 +23,29 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Select Product to Stock In</label>
+                            <div class="col-12 col-md-6 mb-2">
+                                <label class="form-label fw-bold small">Select Product to Stock In</label>
                                 <select name="productId" class="form-select" required>
                                     <option value="" disabled selected>-- Choose a Product --</option>
                                     <% products.forEach(product => { %>
-                                        <option value="<%= product._id %>"><%= product.name %> (Current Stock: <%= product.stockQuantity %>)</option>
+                                        <option value="<%= product._id %>"><%= product.name %> (Stock: <%= product.stockQuantity %>)</option>
                                     <% }) %>
                                 </select>
                             </div>
 
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label fw-bold">Quantity (Units)</label>
+                            <div class="col-12 col-sm-6 col-md-3 mb-2">
+                                <label class="form-label fw-bold small">Quantity (Units)</label>
                                 <input type="number" name="quantity" class="form-control" min="1" placeholder="e.g. 50" required>
                             </div>
 
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label fw-bold">Unit Buying Price (₹)</label>
+                            <div class="col-12 col-sm-6 col-md-3 mb-2">
+                                <label class="form-label fw-bold small">Unit Buying Price (₹)</label>
                                 <input type="number" name="costPrice" class="form-control" min="0" placeholder="e.g. 150" required>
                             </div>
                         </div>
 
                         <div class="mt-4 text-end">
-                            <button type="submit" class="btn btn-success px-4 py-2 fw-bold">
+                            <button type="submit" class="btn btn-success w-100 w-md-auto px-4 py-2 fw-bold">
                                 <i class="bi bi-box-seam"></i> Add to Inventory Stock
                             </button>
                         </div>

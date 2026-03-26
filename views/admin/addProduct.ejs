@@ -3,27 +3,25 @@
     <div class="container-fluid">
         <div class="row">
             <%- include('../layouts/sidebar') %>
-            
-            <main class="col-md-10 ms-sm-auto px-md-4 py-4">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="fw-bold">Add New Product</h2>
-                    <a href="/products" class="btn btn-outline-secondary">Back to Products</a>
+            <main class="col-md-10 col-12 ms-md-auto px-3 px-md-4 py-3 py-md-4">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-3">
+                    <h2 class="fw-bold m-0">Add New Product</h2>
+                    <a href="/products" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> Back to Products</a>
                 </div>
 
-                <div class="card p-4 shadow-sm border-0">
+                <div class="card p-3 p-md-4 shadow-sm border-0">
                     <form action="/product/create" method="POST" enctype="multipart/form-data">
                         <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Product Name</label>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label small fw-medium">Product Name</label>
                                 <input type="text" name="name" class="form-control" required>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">SKU</label>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label small fw-medium">SKU</label>
                                 <input type="text" name="sku" class="form-control" required>
                             </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Category</label>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label small fw-medium">Category</label>
                                 <select name="categoryId" class="form-select" required>
                                     <option value="" disabled selected>Select Category...</option>
                                     <% categories.forEach(cat => { %>
@@ -31,8 +29,8 @@
                                     <% }) %>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Supplier</label>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label small fw-medium">Supplier</label>
                                 <select name="supplierId" class="form-select" required>
                                     <option value="" disabled selected>Select Supplier...</option>
                                     <% suppliers.forEach(sup => { %>
@@ -40,34 +38,31 @@
                                     <% }) %>
                                 </select>
                             </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label">Price (₹)</label>
+                            <div class="col-12 col-sm-4">
+                                <label class="form-label small fw-medium">Price (₹)</label>
                                 <input type="number" name="price" class="form-control" required>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Initial Stock</label>
+                            <div class="col-12 col-sm-4">
+                                <label class="form-label small fw-medium">Initial Stock</label>
                                 <input type="number" name="stockQuantity" class="form-control" value="0" required>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Min Stock Alert Level</label>
+                            <div class="col-12 col-sm-4">
+                                <label class="form-label small fw-medium">Min Stock Alert Level</label>
                                 <input type="number" name="minStockLevel" class="form-control" value="10" required>
                             </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Status</label>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label small fw-medium">Status</label>
                                 <select name="status" class="form-select">
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Product Image (Cloudinary)</label>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label small fw-medium">Product Image (Cloudinary)</label>
                                 <input type="file" name="image" class="form-control" accept="image/png, image/jpeg, image/jpg">
                             </div>
-
                             <div class="col-12 mt-4">
-                                <button type="submit" class="btn btn-primary px-4">Save Product</button>
+                                <button type="submit" class="btn btn-primary px-4 w-100 w-md-auto">Save Product</button>
                             </div>
                         </div>
                     </form>

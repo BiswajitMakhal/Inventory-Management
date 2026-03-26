@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,18 +11,15 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f7fa; /* Soft premium background */
+            background-color: #f4f7fa; 
             color: #2b3445;
+            overflow-x: hidden;
         }
-
-        /* Modern Gradient Navbar */
         .navbar-custom {
             background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
             padding: 15px 0;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
-
-        /* Premium Card Design */
         .modern-card {
             border: none;
             border-radius: 16px;
@@ -32,61 +28,47 @@
             transition: all 0.3s ease;
             overflow: hidden;
         }
-
-        .modern-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Modern Button Styling */
-        .btn-modern {
-            border-radius: 10px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
+        .modern-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); }
+        .btn-modern { border-radius: 10px; font-weight: 500; transition: all 0.2s ease; }
+        .btn-modern:hover { transform: scale(1.02); }
+        .table-modern { border-radius: 16px; overflow: hidden; -webkit-overflow-scrolling: touch; }
+        .table-modern th { font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; color: #6b7280; }
         
-        .btn-modern:hover {
-            transform: scale(1.02);
+        @media (max-width: 576px) {
+            h2 { font-size: 1.5rem !important; }
+            .modern-card { border-radius: 12px; }
+            .card-body, .modern-card { padding: 1rem !important; }
+            .navbar-brand { font-size: 1.25rem !important; }
         }
-
-        /* Table modern look */
-        .table-modern {
-            border-radius: 16px;
-            overflow: hidden;
-        }
-        .table-modern th {
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-            color: #6b7280;
+        @media (max-width: 350px) {
+            h2 { font-size: 1.25rem !important; }
+            .btn { font-size: 0.8rem; padding: 8px; }
+            .table-modern th, .table-modern td { font-size: 0.8rem; padding: 0.5rem; }
+            .navbar-brand { font-size: 1.1rem !important; }
         }
     </style>
 </head>
-
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-5">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4 mb-lg-5 sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="/user/home">
-                <i class="bi bi-shop me-2"></i>InvPro Store
-            </a>
+            <a class="navbar-brand fw-bold" href="/user/home"><i class="bi bi-shop me-2"></i>InvPro Store</a>
             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="bi bi-list fs-1"></i>
+                <i class="bi bi-list fs-2"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item mx-2">
+            <div class="collapse navbar-collapse mt-3 mt-lg-0" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item mx-lg-2 mb-2 mb-lg-0">
                         <a class="nav-link text-white fw-medium" href="/user/home"><i class="bi bi-house-door me-1"></i> Home</a>
                     </li>
-                    <li class="nav-item mx-2">
+                    <li class="nav-item mx-lg-2 mb-2 mb-lg-0">
                         <a class="nav-link text-white fw-medium" href="/user/cart"><i class="bi bi-cart3 me-1"></i> Cart</a>
                     </li>
-                    <li class="nav-item mx-2">
+                    <li class="nav-item mx-lg-2 mb-3 mb-lg-0">
                         <a class="nav-link text-white fw-medium" href="/user/orders"><i class="bi bi-box-seam me-1"></i> Orders</a>
                     </li>
-                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                    <li class="nav-item ms-lg-3">
                         <form action="/logout" method="POST" class="d-inline">
-                            <button type="submit" class="btn btn-light btn-sm fw-bold text-primary rounded-pill px-3 py-2 shadow-sm">
+                            <button type="submit" class="btn btn-light btn-sm fw-bold text-primary rounded-pill px-4 py-2 w-100 w-lg-auto shadow-sm">
                                 <i class="bi bi-box-arrow-right"></i> Logout
                             </button>
                         </form>
